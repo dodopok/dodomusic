@@ -122,7 +122,6 @@ $(document).ready(function() {
     });
 
     $('#musicTime').on('mousedown', function() {
-    	console.debug('dont');
     	changeTime = false;
     });
 
