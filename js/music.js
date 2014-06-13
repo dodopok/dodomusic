@@ -72,6 +72,7 @@ myApp.controller('MusicController', ['$scope', '$http', function($scope, $http, 
 	};
 
 	$scope.addMusic = function(music, artist) {
+		console.debug($scope.audio1);
 		$scope.getMusic(music, artist, function(obj){
 			$scope.playlist.push(obj);
 		});
@@ -82,7 +83,8 @@ myApp.controller('MusicController', ['$scope', '$http', function($scope, $http, 
 		success(function(data, status, headers, config) {
 			var ytUrl = data.feed.entry[0].id.$t.replace('http://gdata.youtube.com/feeds/api/videos/', '');
 			var musicObj = {
-				src : 'http://ytapi.com/api/'+ytUrl+'/direct/171/'
+				src : 'http://ytapi.com/api/'+ytUrl+'/direct/171/',
+				picture: $scope.album.picture,
 			};			
 
 			callback(musicObj);
