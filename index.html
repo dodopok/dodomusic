@@ -1,0 +1,83 @@
+<!doctype html>
+<html class="no-js" lang="pt-br" ng-app="music">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DodoMusic</title>
+    <link rel="stylesheet" href="css/foundation.css" />
+    <link rel="stylesheet" href="css/foundation-icons.css" />
+    <link rel="stylesheet" href="css/loading-bar.css" />
+    <link rel="stylesheet" href="css/css.css" />
+    <script src="js/vendor/modernizr.js"></script>
+  </head>
+  <body ng-controller="MusicController">
+    
+    <div class="row fullWidth">
+      <div class="large-12 columns">
+        <form>
+          <input type="text" placeholder="O que deseja escutar?" ng-model="artist" ng-enter="findAlbums(artist)" />
+        </form>
+      </div>
+    </div>
+    <div class="row fullWidth">
+      <div class="large-9 columns">
+        <ul class="large-block-grid-3 grid cs-style-6">
+          <li ng-repeat="album in albums">
+            <figure>
+                <img src="img/default-album.png" ng-src="{{album.picture}}" alt="{{album.artists[0].name}} - {{album.name}}">
+                <figcaption>
+                    <h3>{{album.artists[0].name}}</h3>
+                    <span>{{album.name}}</span>
+                    <a href="javascript:;" ng-click="setAlbum(album)">Visualizar</a>
+                </figcaption>
+            </figure>
+          </li>
+        </ul>
+      </div>
+      <div class="large-3 columns playlist">        
+        <div class="panel">
+          <img src="img/default-album.png" width="100%" alt="Álbum" ng-src="{{music.picture}}"/>
+          <h5 class="text-center"><strong>{{music.artist}}</strong></h5>
+          <h6 class="text-center">{{music.title}}</h6>
+        </div>
+      </div>
+    </div>
+
+    <!-- Reveal Modals begin -->
+    <div id="albumModal" class="reveal-modal" data-reveal>
+      <div class="large-3 columns">
+        <img src="img/loading-circle.gif" ng-src="{{album.picture}}">
+      </div>
+      <div class="large-9 columns">
+        <h1>{{album.name}}</h1>
+        <h3>{{album.artists[0].name}}</h3>
+
+        <ul class="no-bullet">
+          <li ng-repeat="track in album.tracks">
+            <ul class="button-group">
+              <li><a href="javascript:;" class="button medium secondary fixed-button">{{track.name}}</a></li>
+              <li><a href="javascript:;" class="button medium" ng-click="playMusic(track.name, album.artists[0].name);"><i class="fi-play large"></i> Tocar</a></li>
+              <li><a href="javascript:;" class="button medium" ng-click="addMusic(track.name, album.artists[0].name)"><i class="fi-record large"></i> Adicionar à Reprodução</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+      <a class="close-reveal-modal">&#215;</a>
+    </div>
+
+    <audio id="audio1" media-player="audio1" data-playlist="playlist">
+      <source src="">
+    </audio>
+
+    <script src="js/vendor/jquery.js"></script>
+    <script src="js/angular.min.js"></script>
+    <script src="js/loading-bar.js"></script>
+    <script src="js/angular-media-player-directive.js"></script>
+    <script src="js/angular-media-player-helpers.js"></script>
+    <script src="js/music.js"></script>
+    <script src="js/foundation.min.js"></script>    
+    <script>
+      $(document).foundation();
+    </script>
+  </body>
+</html>
