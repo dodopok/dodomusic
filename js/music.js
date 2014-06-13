@@ -91,12 +91,52 @@ myApp.controller('MusicController', ['$scope', '$http', function($scope, $http, 
 
 }]);
 
+var changeTime = true;
+
 // Set max-height the first time
 $(document).ready(function() {
 	$('#audio1').on('loadeddata', function() 
 	{
 		this.play();
 	});
+
+	$('#musicTime').foundation('slider', 'set_value', 0);
+
+	$("#audio1").bind('timeupdate', function(){
+
+        var track_length = $("#audio1")[0].duration;
+        var secs = $("#audio1")[0].currentTime;
+        var progress = (secs/track_length) * 100;
+
+        if (changeTime) {
+        	$('#musicTime').foundation('slider', 'set_value', progress);
+        }
+
+        /*var tcMins = parseInt(secs/60);
+        var tcSecs = parseInt(secs - (tcMins * 60));
+
+        if (tcSecs < 10) { tcSecs = '0' + tcSecs; }
+
+        // Display the time
+        $('#timecode').html(tcMins + ':' + tcSecs);*/
+    });
+
+    $('#musicTime').on('mousedown', function() {
+    	changeTime = false;
+    });
+
+    $('#musicTime').on('mouseleave', function() {
+    	changeTime = true;
+    });
+
+    $('#musicTime').on('mouseup.fndtn.slider touchend.fndtn.slider pointerup.fndtn.slider', function(){
+		var value = $('#musicTime').attr('data-slider');
+		var track_length = $("#audio1")[0].duration;
+
+		var set = track_length*(value/100);
+		$("#audio1")[0].currentTime = set;		
+	});
+
     $('.reveal-modal').css('max-height', $('html').height() - 150 + 'px'); // 100 +10px to keep modal effect visible
 });
 
