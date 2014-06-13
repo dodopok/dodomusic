@@ -39,6 +39,12 @@
           <img src="img/default-album.png" width="100%" alt="Álbum" ng-src="{{music.picture}}"/>
           <h5 class="text-center"><strong>{{music.artist}}</strong></h5>
           <h6 class="text-center">{{music.title}}</h6>
+
+          <div id="musicTime" class="range-slider round" data-slider data-options="start: 1; end: 100;">
+            <span class="range-slider-handle"></span>
+            <span class="range-slider-active-segment"></span>
+            <input type="hidden">
+          </div>
         </div>
       </div>
     </div>
@@ -68,7 +74,6 @@
     <audio id="audio1" media-player="audio1" data-playlist="playlist">
       <source src="">
     </audio>
-
     <script src="js/vendor/jquery.js"></script>
     <script src="js/angular.min.js"></script>
     <script src="js/loading-bar.js"></script>
