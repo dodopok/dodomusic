@@ -46,9 +46,9 @@
             <input type="hidden">
           </div>
 
-          <ul class="button-group">
+          <ul class="button-group even-3">
             <li><a href="javascript:;" ng-click="audio1.prev(true)" class="button"><i class="fi-previous large"></i></a></li>
-            <li><a href="javascript:;" ng-click="audio1.play()" class="button"><i class="large" ng-class="{'fi-pause': audio1.playing, 'fi-play': !audio1.playing}"></i></a></li>
+            <li><a href="javascript:;" ng-click="audio1.playPause()" class="button"><i class="large" ng-class="{'fi-pause': audio1.playing, 'fi-play': !audio1.playing}"></i></a></li>
             <li><a href="javascript:;" ng-click="audio1.next(true)" class="button"><i class="fi-next large"></i></a></li>
           </ul>
         </div>
@@ -66,10 +66,10 @@
 
         <ul class="no-bullet">
           <li ng-repeat="track in album.tracks">
-            <ul class="button-group">
-              <li><a href="javascript:;" class="button medium secondary fixed-button">{{track.name}}</a></li>
+            <ul class="button-group even-3">
+              <li><a href="javascript:;" class="button medium secondary text-left">{{track.name}}</a></li>
               <li><a href="javascript:;" class="button medium" ng-click="playMusic(track.name, album.artists[0].name);"><i class="fi-play large"></i> Tocar</a></li>
-              <li><a href="javascript:;" class="button medium" ng-click="addMusic(track.name, album.artists[0].name)"><i class="fi-record large"></i> Adicionar à Reprodução</a></li>
+              <li><a href="javascript:;" class="button medium" ng-click="addMusic(track.name, album.artists[0].name)"><i class="fi-record large"></i> Adicionar</a></li>
             </ul>
           </li>
         </ul>
