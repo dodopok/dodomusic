@@ -30,8 +30,8 @@ myApp.controller('MusicController', ['$scope', '$http', function($scope, $http, 
 	};
 
 	$scope.$watch('playlist', function(newVal) {
-		if ($scope.playlist.length) {			
-	    	if (!$scope.audio.src) {
+		if ($scope.playlist.length) {
+	    	if (!$scope.audio.src || $scope.playlist.length == 1) {
 	    		$scope.audio.src = $scope.playlist[0].src;
 	    		$scope.audio.currentTrack = 0;
 	    		$scope.audio.play();
@@ -79,7 +79,6 @@ myApp.controller('MusicController', ['$scope', '$http', function($scope, $http, 
 	$scope.playMusic = function(music, artist) {
 		$scope.getMusic(music, artist, function(obj){			
 			$scope.playlist = [obj];
-			$scope.audio.play();
 		});
 	};
 
@@ -135,8 +134,14 @@ myApp.controller('MusicController', ['$scope', '$http', function($scope, $http, 
 		}
 	}
 
-	$scope.audio.onended = function() {
-		$scope.audio1.next();
+	$scope.audio.onended = function() {		
+		if (!$scope.playlist[$scope.audio.currentTrack+1]) {
+			$scope.audio.paused = true;			
+			$('#musicTime').foundation('slider', 'set_value', 0);
+			$scope.$apply();
+		} else {
+			$scope.audio1.next();			
+		}
 	}
 
 }]);
