@@ -1,4 +1,4 @@
-var myApp = angular.module('music', ['angular-loading-bar', 'mediaPlayer']).config(function($httpProvider){
+var myApp = angular.module('music', ['angular-loading-bar']).config(function($httpProvider){
 	delete $httpProvider.defaults.headers.common['X-Requested-With'];
 });
 
@@ -22,10 +22,22 @@ myApp.controller('MusicController', ['$scope', '$http', function($scope, $http, 
 	$scope.albums = [];
 	$scope.playlist = [];
 	$scope.album = {};
+	$scope.audio = document.getElementById('audio');
+	$scope.audio1 = {};
 
 	$scope.music = {
 		picture : 'img/default-album.png',
 	};
+
+	$scope.$watch('playlist', function(newVal) {
+		if ($scope.playlist.length) {			
+	    	if (!$scope.audio.src) {
+	    		$scope.audio.src = $scope.playlist[0].src;
+	    		$scope.audio.currentTrack = 0;
+	    		$scope.audio.play();
+	    	}
+	    }
+	});
 
 	$scope.findAlbums = function(artist) {
 		$http({method: 'GET', url: 'https://ws.spotify.com/search/1/album.json?q='+encodeURIComponent(artist)}).
@@ -67,12 +79,11 @@ myApp.controller('MusicController', ['$scope', '$http', function($scope, $http, 
 	$scope.playMusic = function(music, artist) {
 		$scope.getMusic(music, artist, function(obj){			
 			$scope.playlist = [obj];
-			$scope.audio1.play();
+			$scope.audio.play();
 		});
 	};
 
 	$scope.addMusic = function(music, artist) {
-		console.debug($scope.audio1);
 		$scope.getMusic(music, artist, function(obj){
 			$scope.playlist.push(obj);
 		});
@@ -85,11 +96,48 @@ myApp.controller('MusicController', ['$scope', '$http', function($scope, $http, 
 			var musicObj = {
 				src : 'http://ytapi.com/api/'+ytUrl+'/direct/171/',
 				picture: $scope.album.picture,
+				artist: artist,
+				title: music,
 			};			
 
 			callback(musicObj);
 		});
 	};
+
+	$scope.audio.onplay = function() {		
+		$scope.music = $scope.playlist[$scope.audio.currentTrack];
+		$scope.$apply();
+	};
+
+	$scope.audio1.playPause = function() {
+		if ($scope.audio.src) {
+			if ($scope.audio.paused) {
+				$scope.audio.play();
+			} else {
+				$scope.audio.pause();
+			}
+		}
+	};
+
+	$scope.audio1.prev = function() {
+		if ($scope.playlist[$scope.audio.currentTrack-1]) {
+			$scope.audio.currentTrack--;
+			$scope.audio.src = $scope.playlist[$scope.audio.currentTrack].src;
+			$scope.audio.play();
+		}
+	}
+
+	$scope.audio1.next = function() {
+		if ($scope.playlist[$scope.audio.currentTrack+1]) {
+			$scope.audio.currentTrack++;
+			$scope.audio.src = $scope.playlist[$scope.audio.currentTrack].src;
+			$scope.audio.play();
+		}
+	}
+
+	$scope.audio.onended = function() {
+		$scope.audio1.next();
+	}
 
 }]);
 
@@ -97,17 +145,13 @@ var changeTime = true;
 
 // Set max-height the first time
 $(document).ready(function() {
-	$('#audio1').on('loadeddata', function() 
-	{
-		this.play();
-	});
 
 	$('#musicTime').foundation('slider', 'set_value', 0);
 
-	$("#audio1").bind('timeupdate', function(){
+	$("#audio").bind('timeupdate', function(){
 
-        var track_length = $("#audio1")[0].duration;
-        var secs = $("#audio1")[0].currentTime;
+        var track_length = $("#audio")[0].duration;
+        var secs = $("#audio")[0].currentTime;
         var progress = (secs/track_length) * 100;
 
         if (changeTime) {
@@ -133,10 +177,10 @@ $(document).ready(function() {
 
     $('#musicTime').on('mouseup.fndtn.slider touchend.fndtn.slider pointerup.fndtn.slider', function(){
 		var value = $('#musicTime').attr('data-slider');
-		var track_length = $("#audio1")[0].duration;
+		var track_length = $("#audio")[0].duration;
 
 		var set = track_length*(value/100);
-		$("#audio1")[0].currentTime = set;		
+		$("#audio")[0].currentTime = set;		
 	});
 
     $('.reveal-modal').css('max-height', $('html').height() - 150 + 'px'); // 100 +10px to keep modal effect visible

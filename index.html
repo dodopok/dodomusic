@@ -47,9 +47,9 @@
           </div>
 
           <ul class="button-group even-3">
-            <li><a href="javascript:;" ng-click="audio1.prev(true)" class="button"><i class="fi-previous large"></i></a></li>
-            <li><a href="javascript:;" ng-click="audio1.playPause()" class="button"><i class="large" ng-class="{'fi-pause': audio1.playing, 'fi-play': !audio1.playing}"></i></a></li>
-            <li><a href="javascript:;" ng-click="audio1.next(true)" class="button"><i class="fi-next large"></i></a></li>
+            <li><a href="javascript:;" ng-click="audio1.prev()" class="button"><i class="fi-previous large"></i></a></li>
+            <li><a href="javascript:;" ng-click="audio1.playPause()" class="button"><i class="large" ng-class="{'fi-pause': !audio.paused, 'fi-play': audio.paused}"></i></a></li>
+            <li><a href="javascript:;" ng-click="audio1.next()" class="button"><i class="fi-next large"></i></a></li>
           </ul>
         </div>
       </div>
@@ -77,13 +77,10 @@
       <a class="close-reveal-modal">&#215;</a>
     </div>
 
-    <audio id="audio1" media-player="audio1" data-playlist="playlist">
-      <source src="">
-    </audio>
+    <audio id="audio"></audio>
     <script src="js/vendor/jquery.js"></script>
     <script src="js/angular.min.js"></script>
     <script src="js/loading-bar.js"></script>
-    <script src="js/angular-media-player.js"></script>
     <script src="js/music.js"></script>
     <script src="js/foundation.min.js"></script>    
     <script>
